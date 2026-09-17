@@ -1,0 +1,338 @@
+[
+  {
+    "id": "correct",
+    "description": "correct",
+    "proposal": {
+      "component": "Component X",
+      "vendor": "Vendor A",
+      "quantity": 6000,
+      "unitPrice": 2.35,
+      "leadTimeDays": 15,
+      "totalCost": 14100,
+      "rationale": "On-hand inventory is below the 1,200-unit safety stock threshold. Vendor A is approved for Component X; ordering at their minimum order quantity keeps unit cost at contract price."
+    },
+    "expectedVerdict": "PASS",
+    "actualVerdict": "PASS",
+    "pass": true,
+    "confidence": 1,
+    "claims": [
+      {
+        "field": "approved",
+        "label": "Vendor is approved for this component",
+        "status": "grounded",
+        "severity": "info",
+        "citationId": "vendorA-x-approved"
+      },
+      {
+        "field": "unit_price",
+        "label": "Unit price",
+        "status": "grounded",
+        "severity": "info",
+        "citationId": "vendorA-x-price"
+      },
+      {
+        "field": "moq",
+        "label": "Order quantity vs. minimum order quantity",
+        "status": "grounded",
+        "severity": "info",
+        "citationId": "vendorA-x-moq"
+      },
+      {
+        "field": "lead_time_days",
+        "label": "Lead time vs. contracted lead time",
+        "status": "grounded",
+        "severity": "info",
+        "citationId": "vendorA-x-leadtime"
+      },
+      {
+        "field": "po_budget_cap",
+        "label": "Total cost vs. purchase-order cap",
+        "status": "grounded",
+        "severity": "info",
+        "citationId": "policy-po-cap"
+      }
+    ],
+    "mossOnlyLatencyMs": 0.056938000000172906,
+    "totalLatencyMs": 13.88190899999995
+  },
+  {
+    "id": "price_mismatch",
+    "description": "price_mismatch",
+    "proposal": {
+      "component": "Component X",
+      "vendor": "Vendor A",
+      "quantity": 6000,
+      "unitPrice": 2.1,
+      "leadTimeDays": 15,
+      "totalCost": 12600,
+      "rationale": "Reordering from Vendor A at their standard unit price."
+    },
+    "expectedVerdict": "FLAG",
+    "actualVerdict": "FLAG",
+    "pass": true,
+    "confidence": 0.8,
+    "claims": [
+      {
+        "field": "approved",
+        "label": "Vendor is approved for this component",
+        "status": "grounded",
+        "severity": "info",
+        "citationId": "vendorA-x-approved"
+      },
+      {
+        "field": "unit_price",
+        "label": "Unit price",
+        "status": "flagged",
+        "severity": "warning",
+        "citationId": "vendorA-x-price"
+      },
+      {
+        "field": "moq",
+        "label": "Order quantity vs. minimum order quantity",
+        "status": "grounded",
+        "severity": "info",
+        "citationId": "vendorA-x-moq"
+      },
+      {
+        "field": "lead_time_days",
+        "label": "Lead time vs. contracted lead time",
+        "status": "grounded",
+        "severity": "info",
+        "citationId": "vendorA-x-leadtime"
+      },
+      {
+        "field": "po_budget_cap",
+        "label": "Total cost vs. purchase-order cap",
+        "status": "grounded",
+        "severity": "info",
+        "citationId": "policy-po-cap"
+      }
+    ],
+    "mossOnlyLatencyMs": 0.039846999999781474,
+    "totalLatencyMs": 0.5795540000001438
+  },
+  {
+    "id": "moq_violation",
+    "description": "moq_violation",
+    "proposal": {
+      "component": "Component X",
+      "vendor": "Vendor B",
+      "quantity": 1500,
+      "unitPrice": 2.6,
+      "leadTimeDays": 9,
+      "totalCost": 3900,
+      "rationale": "A small top-up order from Vendor B to cover the shortfall."
+    },
+    "expectedVerdict": "FLAG",
+    "actualVerdict": "FLAG",
+    "pass": true,
+    "confidence": 0.8,
+    "claims": [
+      {
+        "field": "approved",
+        "label": "Vendor is approved for this component",
+        "status": "grounded",
+        "severity": "info",
+        "citationId": "vendorB-x-approved"
+      },
+      {
+        "field": "unit_price",
+        "label": "Unit price",
+        "status": "grounded",
+        "severity": "info",
+        "citationId": "vendorB-x-price"
+      },
+      {
+        "field": "moq",
+        "label": "Order quantity vs. minimum order quantity",
+        "status": "flagged",
+        "severity": "warning",
+        "citationId": "vendorB-x-moq"
+      },
+      {
+        "field": "lead_time_days",
+        "label": "Lead time vs. contracted lead time",
+        "status": "grounded",
+        "severity": "info",
+        "citationId": "vendorB-x-leadtime"
+      },
+      {
+        "field": "po_budget_cap",
+        "label": "Total cost vs. purchase-order cap",
+        "status": "grounded",
+        "severity": "info",
+        "citationId": "policy-po-cap"
+      }
+    ],
+    "mossOnlyLatencyMs": 0.0162199999999757,
+    "totalLatencyMs": 0.13545700000031502
+  },
+  {
+    "id": "unapproved_vendor",
+    "description": "unapproved_vendor",
+    "proposal": {
+      "component": "Component X",
+      "vendor": "Vendor C",
+      "quantity": 5000,
+      "unitPrice": 2.2,
+      "leadTimeDays": 12,
+      "totalCost": 11000,
+      "rationale": "Vendor C quoted a competitive rate for Component X."
+    },
+    "expectedVerdict": "BLOCK",
+    "actualVerdict": "BLOCK",
+    "pass": true,
+    "confidence": 0.44000000000000006,
+    "claims": [
+      {
+        "field": "approved",
+        "label": "Vendor is approved for this component",
+        "status": "flagged",
+        "severity": "critical",
+        "citationId": null
+      },
+      {
+        "field": "unit_price",
+        "label": "Unit price",
+        "status": "unverifiable",
+        "severity": "warning",
+        "citationId": null
+      },
+      {
+        "field": "moq",
+        "label": "Order quantity vs. minimum order quantity",
+        "status": "unverifiable",
+        "severity": "warning",
+        "citationId": null
+      },
+      {
+        "field": "lead_time_days",
+        "label": "Lead time vs. contracted lead time",
+        "status": "unverifiable",
+        "severity": "warning",
+        "citationId": null
+      },
+      {
+        "field": "po_budget_cap",
+        "label": "Total cost vs. purchase-order cap",
+        "status": "grounded",
+        "severity": "info",
+        "citationId": "policy-po-cap"
+      }
+    ],
+    "mossOnlyLatencyMs": 0.3291420000000471,
+    "totalLatencyMs": 0.6987600000002203
+  },
+  {
+    "id": "budget_overrun",
+    "description": "budget_overrun",
+    "proposal": {
+      "component": "Component X",
+      "vendor": "Vendor A",
+      "quantity": 9000,
+      "unitPrice": 2.35,
+      "leadTimeDays": 15,
+      "totalCost": 21150,
+      "rationale": "Ordering extra volume from Vendor A to build a buffer against future shortages."
+    },
+    "expectedVerdict": "BLOCK",
+    "actualVerdict": "BLOCK",
+    "pass": true,
+    "confidence": 0.8,
+    "claims": [
+      {
+        "field": "approved",
+        "label": "Vendor is approved for this component",
+        "status": "grounded",
+        "severity": "info",
+        "citationId": "vendorA-x-approved"
+      },
+      {
+        "field": "unit_price",
+        "label": "Unit price",
+        "status": "grounded",
+        "severity": "info",
+        "citationId": "vendorA-x-price"
+      },
+      {
+        "field": "moq",
+        "label": "Order quantity vs. minimum order quantity",
+        "status": "grounded",
+        "severity": "info",
+        "citationId": "vendorA-x-moq"
+      },
+      {
+        "field": "lead_time_days",
+        "label": "Lead time vs. contracted lead time",
+        "status": "grounded",
+        "severity": "info",
+        "citationId": "vendorA-x-leadtime"
+      },
+      {
+        "field": "po_budget_cap",
+        "label": "Total cost vs. purchase-order cap",
+        "status": "flagged",
+        "severity": "critical",
+        "citationId": "policy-po-cap"
+      }
+    ],
+    "mossOnlyLatencyMs": 0.012709000000086235,
+    "totalLatencyMs": 0.11103400000001784
+  },
+  {
+    "id": "unverifiable_vendor",
+    "description": "unverifiable_vendor",
+    "proposal": {
+      "component": "Component X",
+      "vendor": "Vendor D",
+      "quantity": 5000,
+      "unitPrice": 2,
+      "leadTimeDays": 10,
+      "totalCost": 10000,
+      "rationale": "Vendor D is a new supplier offering a lower rate for Component X."
+    },
+    "expectedVerdict": "FLAG",
+    "actualVerdict": "FLAG",
+    "pass": true,
+    "confidence": 0.52,
+    "claims": [
+      {
+        "field": "approved",
+        "label": "Vendor is approved for this component",
+        "status": "unverifiable",
+        "severity": "warning",
+        "citationId": null
+      },
+      {
+        "field": "unit_price",
+        "label": "Unit price",
+        "status": "unverifiable",
+        "severity": "warning",
+        "citationId": null
+      },
+      {
+        "field": "moq",
+        "label": "Order quantity vs. minimum order quantity",
+        "status": "unverifiable",
+        "severity": "warning",
+        "citationId": null
+      },
+      {
+        "field": "lead_time_days",
+        "label": "Lead time vs. contracted lead time",
+        "status": "unverifiable",
+        "severity": "warning",
+        "citationId": null
+      },
+      {
+        "field": "po_budget_cap",
+        "label": "Total cost vs. purchase-order cap",
+        "status": "grounded",
+        "severity": "info",
+        "citationId": "policy-po-cap"
+      }
+    ],
+    "mossOnlyLatencyMs": 0.05214899999964473,
+    "totalLatencyMs": 0.14707300000009127
+  }
+]
