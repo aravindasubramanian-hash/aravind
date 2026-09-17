@@ -4,7 +4,7 @@ A reliability, security, and evaluation layer for AI ops/procurement decision ag
 
 An AI agent proposes a procurement decision (vendor, quantity, price, lead time). Before that decision reaches an ERP or a vendor, this guardrail independently checks every claim in it against the real vendor contracts and company policy — retrieved from [Moss](https://www.moss.dev) in-process, in single-digit milliseconds — and returns a **PASS / FLAG / BLOCK** verdict with a confidence score, per-claim citations, and latency numbers.
 
-See the [PRD](#) and [architecture diagram](#) for the full product and technical rationale (links shared alongside this repo).
+See the [PRD](./docs/PRD.md) and [architecture doc](./docs/architecture.md) for the full product and technical rationale, and [DEMO.md](./DEMO.md) for a judge-facing walkthrough of the six scenarios.
 
 ## Why this exists
 
@@ -18,6 +18,14 @@ npm run dev
 ```
 
 Open http://localhost:3000, pick a scenario, click **Run decision**. It works immediately with no API keys — the six scenarios are scripted and deterministic (see below) and the retrieval layer defaults to an in-process mock that mirrors Moss's own query interface exactly.
+
+## Running the tests
+
+```bash
+npm test
+```
+
+23 tests across three files: end-to-end scenario coverage (every scenario below resolves to its documented verdict — this is the assertion the whole demo depends on), guardrail unit tests (including regression tests for two bugs a pre-submission review caught: a dropped citation on price mismatches, and lead time never actually being verified), and `MockMossStore` retrieval tests. See [evaluation/](./evaluation/) for a judge-readable summary of the same results.
 
 ## The six demo scenarios
 
@@ -72,7 +80,7 @@ Ops user → Decision Agent --(network hop, ~0.5-2s)--> LLM
    Audit Log          Dashboard
 ```
 
-The full diagram with latency annotations is a separate artifact shared alongside this repo.
+See [docs/architecture.md](./docs/architecture.md) for the full component breakdown and the interactive version of this diagram.
 
 ## Project structure
 
@@ -87,11 +95,21 @@ lib/
   agent.ts            Decision agent (scripted scenarios + optional LLM mode)
   guardrail.ts         Claim extraction, comparison, scoring, verdict roll-up
   auditLog.ts          In-memory audit trail
+tests/
+  scenarios.test.ts    End-to-end: every scenario resolves to its documented verdict
+  guardrail.test.ts    Unit coverage for claim extraction, citations, verdict roll-up
+  moss.test.ts         MockMossStore retrieval tests
+docs/
+  PRD.md               Full product requirements doc
+  architecture.md       Component breakdown + diagram
+evaluation/
+  scenarios.json       Machine-readable expected vs. actual verdict for each scenario
+  README.md            Judge-readable summary of the latest test run
 ```
 
 ## What's out of scope (by design, for a 3-day sprint)
 
-Multi-domain support beyond procurement, real ERP/contract-system integration, auth, a production agent with open-ended tool use, human-in-the-loop approval workflows, and compliance export formats. See the PRD for the full scope call.
+Multi-domain support beyond procurement, real ERP/contract-system integration, auth, a production agent with open-ended tool use, human-in-the-loop approval workflows, and compliance export formats. See the [PRD](./docs/PRD.md) for the full scope call.
 
 ## Deploying
 
