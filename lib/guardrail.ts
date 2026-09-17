@@ -1,13 +1,15 @@
 import { getMossStore } from "./moss";
-import { Claim, ClaimResult, GuardrailResult, Proposal, Verdict } from "./types";
+import { Claim, ClaimResult, GuardrailResult, PolicyFact, Proposal, Verdict } from "./types";
 
 const PRICE_TOLERANCE = 0.02; // 2% — treat tiny rounding differences as grounded, not flagged
+const LEAD_TIME_TOLERANCE = 0; // contracted lead time is a fixed commitment — no slack
 
 function extractClaims(p: Proposal): Claim[] {
   return [
     { field: "approved", label: "Vendor is approved for this component", claimedValue: p.vendor },
     { field: "unit_price", label: "Unit price", claimedValue: p.unitPrice, unit: "USD" },
     { field: "moq", label: "Order quantity vs. minimum order quantity", claimedValue: p.quantity, unit: "units" },
+    { field: "lead_time_days", label: "Lead time vs. contracted lead time", claimedValue: p.leadTimeDays, unit: "days" },
     { field: "po_budget_cap", label: "Total cost vs. purchase-order cap", claimedValue: p.totalCost, unit: "USD" },
   ];
 }
@@ -78,6 +80,18 @@ export async function evaluateProposal(p: Proposal): Promise<GuardrailResult> {
       continue;
     }
 
+    if (claim.field === "lead_time_days") {
+      const { fact, latencyMs } = await store.getFact(p.component, "lead_time_days", p.vendor);
+      mossOnlyLatencyMs += latencyMs;
+      results.push(compareNumeric(claim, fact, p.leadTimeDays, LEAD_TIME_TOLERANCE, latencyMs, {
+        grounded: (retrieved) => `Matches ${p.vendor}'s contracted lead time of ${retrieved} days.`,
+        flagged: (retrieved) =>
+          `Proposal claims a ${p.leadTimeDays}-day lead time, but ${p.vendor}'s contracted lead time for ${p.component} is ${retrieved} days.`,
+        unverifiable: `No contracted lead time on file for ${p.vendor} on ${p.component}.`,
+      }));
+      continue;
+    }
+
     if (claim.field === "moq") {
       const { fact, latencyMs } = await store.getFact(p.component, "moq", p.vendor);
       mossOnlyLatencyMs += latencyMs;
@@ -141,7 +155,7 @@ export async function evaluateProposal(p: Proposal): Promise<GuardrailResult> {
 
 function compareNumeric(
   claim: Claim,
-  fact: { metadata: { value: number | string | boolean } } | null,
+  fact: PolicyFact | null,
   claimedValue: number,
   tolerance: number,
   latencyMs: number,
@@ -157,12 +171,15 @@ function compareNumeric(
     };
   }
   const retrieved = Number(fact.metadata.value);
-  const withinTolerance = Math.abs(claimedValue - retrieved) / retrieved <= tolerance;
+  const withinTolerance =
+    tolerance === 0 ? claimedValue === retrieved : Math.abs(claimedValue - retrieved) / retrieved <= tolerance;
   return {
     ...claim,
     status: withinTolerance ? "grounded" : "flagged",
     severity: withinTolerance ? "info" : "warning",
     retrievedValue: retrieved,
+    retrievedText: fact.text,
+    citationId: fact.id,
     detail: withinTolerance ? messages.grounded(retrieved) : messages.flagged(retrieved),
     latencyMs,
   };
