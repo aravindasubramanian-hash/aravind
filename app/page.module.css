@@ -1,0 +1,226 @@
+.wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 20px 64px;
+}
+
+.eyebrow {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 8px;
+}
+
+.title {
+  font-size: clamp(24px, 4vw, 32px);
+  line-height: 1.15;
+  margin: 0 0 10px;
+}
+
+.sub {
+  color: var(--muted);
+  max-width: 68ch;
+  line-height: 1.55;
+  margin: 0 0 28px;
+  font-size: 15px;
+}
+
+.scenarios {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.scenarioBtn {
+  text-align: left;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+
+.scenarioBtn.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.scenarioBtn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.runRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 30px;
+}
+
+.runBtn {
+  padding: 11px 22px;
+  border-radius: 999px;
+  border: none;
+  background: var(--accent);
+  color: #06110d;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.runBtn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.cardTitle {
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 12px;
+  font-weight: 600;
+}
+
+.proposalGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fieldLabel {
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.fieldValue {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 15px;
+}
+
+.verdictRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.verdictBadge {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+}
+
+.verdictPASS { background: var(--pass-soft); color: var(--pass); }
+.verdictFLAG { background: var(--flag-soft); color: var(--flag); }
+.verdictBLOCK { background: var(--block-soft); color: var(--block); }
+
+.latency {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.latency b { color: var(--ink); }
+
+.claim {
+  border-top: 1px solid var(--line);
+  padding: 12px 0;
+}
+
+.claim:first-child { border-top: none; padding-top: 0; }
+
+.claimHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.claimLabel { font-weight: 600; font-size: 13.5px; }
+
+.claimStatus {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 2px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.statusgrounded { background: var(--pass-soft); color: var(--pass); }
+.statusflagged { background: var(--flag-soft); color: var(--flag); }
+.statusunverifiable { background: var(--surface-2); color: var(--muted); }
+
+.claimDetail {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.citation {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.history { margin-top: 8px; }
+
+.historyRow {
+  display: grid;
+  grid-template-columns: 90px 1fr 110px 90px;
+  gap: 10px;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+  align-items: center;
+}
+
+.historyRow:first-child { border-top: none; }
+
+.historyQuery {
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.empty {
+  color: var(--muted);
+  font-size: 13.5px;
+}
