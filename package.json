@@ -1,0 +1,27 @@
+{
+  "name": "ops-decision-guardrail",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Agent Reliability, Security and Evaluation guardrail for ops/procurement decision agents, backed by Moss for sub-10ms policy retrieval. Built for the YC Fall 2026 x Moss Zero Latency Builder Sprint.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "16.3.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "optionalDependencies": {
+    "@moss-dev/moss": "^1.7.1"
+  },
+  "devDependencies": {
+    "@types/node": "20.14.10",
+    "@types/react": "18.3.3",
+    "@types/react-dom": "18.3.0",
+    "typescript": "5.5.3"
+  }
+}
