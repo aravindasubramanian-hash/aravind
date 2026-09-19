@@ -32,10 +32,10 @@ npm test
 | Scenario | What's wrong | Verdict |
 |---|---|---|
 | Correct reorder | Nothing — every claim matches policy | **PASS** |
-| Price mismatch | Agent claims $2.10/unit; contract says $2.35 | **FLAG** |
+| Price mismatch | Agent claims ₹189/unit; contract says ₹211.50 | **FLAG** |
 | Below minimum order qty | Agent orders 1,500 units; Vendor B's MOQ is 3,000 | **FLAG** |
 | Unapproved vendor | Vendor C is contracted for a *different* component, not this one | **BLOCK** |
-| Exceeds budget cap | Total cost is $21,150; the auto-issue cap is $20,000 | **BLOCK** |
+| Exceeds budget cap | Total cost is ₹19,03,500; the auto-issue cap is ₹18,00,000 | **BLOCK** |
 | Unknown vendor | Vendor D has no records anywhere in the policy corpus | **FLAG** |
 
 The guardrail treats "we checked and this is a confirmed violation" (BLOCK) differently from "we have no data on this at all" (FLAG, needs a human) — both fail closed, but with different severity, which is itself a small reliability design decision worth noticing in the code (`lib/guardrail.ts`).
@@ -124,3 +124,4 @@ Set `MOSS_PROJECT_ID` / `MOSS_PROJECT_KEY` (and optionally `AGENT_MODE=llm` + `A
 ---
 
 Built for the [YC Fall 2026 × Moss Zero Latency Builder Sprint](https://app.hidevs.xyz/hackathons/yc-fall-2026-moss-zero-latency-builder-sprint).
+
