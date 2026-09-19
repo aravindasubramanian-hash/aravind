@@ -6,9 +6,9 @@
       "component": "Component X",
       "vendor": "Vendor A",
       "quantity": 6000,
-      "unitPrice": 2.35,
+      "unitPrice": 211.5,
       "leadTimeDays": 15,
-      "totalCost": 14100,
+      "totalCost": 1269000,
       "rationale": "On-hand inventory is below the 1,200-unit safety stock threshold. Vendor A is approved for Component X; ordering at their minimum order quantity keeps unit cost at contract price."
     },
     "expectedVerdict": "PASS",
@@ -52,8 +52,8 @@
         "citationId": "policy-po-cap"
       }
     ],
-    "mossOnlyLatencyMs": 0.056938000000172906,
-    "totalLatencyMs": 13.88190899999995
+    "mossOnlyLatencyMs": 0.07882500000005166,
+    "totalLatencyMs": 14.618156999999883
   },
   {
     "id": "price_mismatch",
@@ -62,9 +62,9 @@
       "component": "Component X",
       "vendor": "Vendor A",
       "quantity": 6000,
-      "unitPrice": 2.1,
+      "unitPrice": 189,
       "leadTimeDays": 15,
-      "totalCost": 12600,
+      "totalCost": 1134000,
       "rationale": "Reordering from Vendor A at their standard unit price."
     },
     "expectedVerdict": "FLAG",
@@ -108,8 +108,8 @@
         "citationId": "policy-po-cap"
       }
     ],
-    "mossOnlyLatencyMs": 0.039846999999781474,
-    "totalLatencyMs": 0.5795540000001438
+    "mossOnlyLatencyMs": 0.0241790000002311,
+    "totalLatencyMs": 0.4518380000001798
   },
   {
     "id": "moq_violation",
@@ -118,9 +118,9 @@
       "component": "Component X",
       "vendor": "Vendor B",
       "quantity": 1500,
-      "unitPrice": 2.6,
+      "unitPrice": 234,
       "leadTimeDays": 9,
-      "totalCost": 3900,
+      "totalCost": 351000,
       "rationale": "A small top-up order from Vendor B to cover the shortfall."
     },
     "expectedVerdict": "FLAG",
@@ -164,9 +164,10 @@
         "citationId": "policy-po-cap"
       }
     ],
-    "mossOnlyLatencyMs": 0.0162199999999757,
-    "totalLatencyMs": 0.13545700000031502
+    "mossOnlyLatencyMs": 0.010311999999430554,
+    "totalLatencyMs": 0.10982000000012704
   },
+
   {
     "id": "unapproved_vendor",
     "description": "unapproved_vendor",
@@ -174,9 +175,9 @@
       "component": "Component X",
       "vendor": "Vendor C",
       "quantity": 5000,
-      "unitPrice": 2.2,
+      "unitPrice": 198,
       "leadTimeDays": 12,
-      "totalCost": 11000,
+      "totalCost": 990000,
       "rationale": "Vendor C quoted a competitive rate for Component X."
     },
     "expectedVerdict": "BLOCK",
@@ -220,8 +221,8 @@
         "citationId": "policy-po-cap"
       }
     ],
-    "mossOnlyLatencyMs": 0.3291420000000471,
-    "totalLatencyMs": 0.6987600000002203
+    "mossOnlyLatencyMs": 0.2985339999995631,
+    "totalLatencyMs": 0.5540600000003906
   },
   {
     "id": "budget_overrun",
@@ -230,9 +231,9 @@
       "component": "Component X",
       "vendor": "Vendor A",
       "quantity": 9000,
-      "unitPrice": 2.35,
+      "unitPrice": 211.5,
       "leadTimeDays": 15,
-      "totalCost": 21150,
+      "totalCost": 1903500,
       "rationale": "Ordering extra volume from Vendor A to build a buffer against future shortages."
     },
     "expectedVerdict": "BLOCK",
@@ -276,8 +277,8 @@
         "citationId": "policy-po-cap"
       }
     ],
-    "mossOnlyLatencyMs": 0.012709000000086235,
-    "totalLatencyMs": 0.11103400000001784
+    "mossOnlyLatencyMs": 0.0072560000003250025,
+    "totalLatencyMs": 0.05959600000005594
   },
   {
     "id": "unverifiable_vendor",
@@ -286,9 +287,9 @@
       "component": "Component X",
       "vendor": "Vendor D",
       "quantity": 5000,
-      "unitPrice": 2,
+      "unitPrice": 180,
       "leadTimeDays": 10,
-      "totalCost": 10000,
+      "totalCost": 900000,
       "rationale": "Vendor D is a new supplier offering a lower rate for Component X."
     },
     "expectedVerdict": "FLAG",
@@ -332,7 +333,8 @@
         "citationId": "policy-po-cap"
       }
     ],
-    "mossOnlyLatencyMs": 0.05214899999964473,
-    "totalLatencyMs": 0.14707300000009127
+    "mossOnlyLatencyMs": 0.05383999999958178,
+    "totalLatencyMs": 0.10947400000077323
   }
 ]
+
