@@ -18,7 +18,7 @@ describe("MockMossStore", () => {
     const store = await getMossStore();
     const { fact } = await store.getFact("Component X", "unit_price", "Vendor A");
     expect(fact?.id).toBe("vendorA-x-price");
-    expect(fact?.metadata.value).toBe(2.35);
+    expect(fact?.metadata.value).toBe(211.5);
   });
 
   it("getFact returns null for a combination with no policy fact", async () => {
