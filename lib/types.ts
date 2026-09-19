@@ -10,6 +10,9 @@ export type ScenarioId =
   | "budget_overrun"
   | "unverifiable_vendor";
 
+/** A scripted scenario id, or "custom" for a hand-built proposal that skips the agent step. */
+export type RecordScenarioId = ScenarioId | "custom";
+
 export interface Scenario {
   id: ScenarioId;
   label: string;
@@ -74,8 +77,9 @@ export interface DecisionRecord {
   id: string;
   timestamp: string;
   query: string;
-  scenario: ScenarioId;
+  scenario: RecordScenarioId;
   proposal: Proposal;
   guardrail: GuardrailResult;
   agentLatencyMs: number;
 }
+
