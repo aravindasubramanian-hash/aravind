@@ -11,8 +11,8 @@ export const POLICY_FACTS: PolicyFact[] = [
   // --- Vendor A — approved for Component X ---
   {
     id: "vendorA-x-price",
-    text: "Vendor A's contracted unit price for Component X is $2.35 per unit.",
-    metadata: { component: "Component X", vendor: "Vendor A", field: "unit_price", value: 2.35, unit: "USD" },
+    text: "Vendor A's contracted unit price for Component X is ₹211.50 per unit.",
+    metadata: { component: "Component X", vendor: "Vendor A", field: "unit_price", value: 211.5, unit: "INR" },
   },
   {
     id: "vendorA-x-moq",
@@ -33,8 +33,8 @@ export const POLICY_FACTS: PolicyFact[] = [
   // --- Vendor B — approved for Component X ---
   {
     id: "vendorB-x-price",
-    text: "Vendor B's contracted unit price for Component X is $2.60 per unit.",
-    metadata: { component: "Component X", vendor: "Vendor B", field: "unit_price", value: 2.6, unit: "USD" },
+    text: "Vendor B's contracted unit price for Component X is ₹234.00 per unit.",
+    metadata: { component: "Component X", vendor: "Vendor B", field: "unit_price", value: 234, unit: "INR" },
   },
   {
     id: "vendorB-x-moq",
@@ -55,8 +55,8 @@ export const POLICY_FACTS: PolicyFact[] = [
   // --- Vendor C — approved for Component Y only, NOT Component X ---
   {
     id: "vendorC-y-price",
-    text: "Vendor C's contracted unit price for Component Y is $4.10 per unit.",
-    metadata: { component: "Component Y", vendor: "Vendor C", field: "unit_price", value: 4.1, unit: "USD" },
+    text: "Vendor C's contracted unit price for Component Y is ₹369.00 per unit.",
+    metadata: { component: "Component Y", vendor: "Vendor C", field: "unit_price", value: 369, unit: "INR" },
   },
   {
     id: "vendorC-y-approved",
@@ -67,8 +67,8 @@ export const POLICY_FACTS: PolicyFact[] = [
   // --- Company-wide procurement policy ---
   {
     id: "policy-po-cap",
-    text: "Purchase orders above $20,000 require additional approval and should not be auto-issued by an agent.",
-    metadata: { component: "*", field: "po_budget_cap", value: 20000, unit: "USD" },
+    text: "Purchase orders above ₹18,00,000 require additional approval and should not be auto-issued by an agent.",
+    metadata: { component: "*", field: "po_budget_cap", value: 1800000, unit: "INR" },
   },
   {
     id: "policy-reorder-x",
@@ -94,3 +94,4 @@ export function findFact(
       (vendor === undefined || f.metadata.vendor === vendor)
   );
 }
+
