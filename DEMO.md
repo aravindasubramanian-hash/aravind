@@ -13,11 +13,11 @@ Open http://localhost:3000. Each scenario is a button; click one, then **Run dec
 
 **1. Correct reorder — expect PASS**
 Query: *"We're low on Component X — should we reorder from Vendor A, and how much?"*
-The agent proposes 6,000 units from Vendor A at $2.35/unit, 15-day lead time. Every one of the five claims (approval, unit price, lead time, MOQ, budget cap) matches the policy corpus exactly — this is the baseline that shows the guardrail isn't just reflexively suspicious.
+The agent proposes 6,000 units from Vendor A at ₹211.50/unit, 15-day lead time. Every one of the five claims (approval, unit price, lead time, MOQ, budget cap) matches the policy corpus exactly — this is the baseline that shows the guardrail isn't just reflexively suspicious.
 
 **2. Price mismatch — expect FLAG**
 Query: *"Reorder Component X from Vendor A — confirm the price and quantity."*
-The agent claims $2.10/unit; Vendor A's actual contract price is $2.35. Point out the citation on the flagged claim (`vendorA-x-price`) — that's the "show your work" part of the guardrail, not just a red/green light.
+The agent claims ₹189/unit; Vendor A's actual contract price is ₹211.50. Point out the citation on the flagged claim (`vendorA-x-price`) — that's the "show your work" part of the guardrail, not just a red/green light.
 
 **3. Below minimum order quantity — expect FLAG**
 Query: *"We only need a small top-up of Component X — order a small batch from Vendor B."*
@@ -29,7 +29,7 @@ Vendor C is a real, known vendor — just not approved for *this* component (the
 
 **5. Exceeds budget cap — expect BLOCK**
 Query: *"Place a large reorder of Component X from Vendor A to build up a buffer."*
-9,000 units at the correct $2.35/unit price is $21,150 — over the $20,000 auto-issue cap. Every individual claim (vendor, price, lead time) is independently correct; only the aggregate crosses a policy line. Good scenario for showing the guardrail checks derived values, not just claim-by-claim facts in isolation.
+9,000 units at the correct ₹211.50/unit price is ₹19,03,500 — over the ₹18,00,000 auto-issue cap. Every individual claim (vendor, price, lead time) is independently correct; only the aggregate crosses a policy line. Good scenario for showing the guardrail checks derived values, not just claim-by-claim facts in isolation.
 
 **6. Unknown vendor — expect FLAG**
 Query: *"A new supplier, Vendor D, is offering Component X — reorder from them."*
