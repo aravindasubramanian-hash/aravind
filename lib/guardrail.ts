@@ -7,10 +7,10 @@ const LEAD_TIME_TOLERANCE = 0; // contracted lead time is a fixed commitment —
 function extractClaims(p: Proposal): Claim[] {
   return [
     { field: "approved", label: "Vendor is approved for this component", claimedValue: p.vendor },
-    { field: "unit_price", label: "Unit price", claimedValue: p.unitPrice, unit: "USD" },
+    { field: "unit_price", label: "Unit price", claimedValue: p.unitPrice, unit: "INR" },
     { field: "moq", label: "Order quantity vs. minimum order quantity", claimedValue: p.quantity, unit: "units" },
     { field: "lead_time_days", label: "Lead time vs. contracted lead time", claimedValue: p.leadTimeDays, unit: "days" },
-    { field: "po_budget_cap", label: "Total cost vs. purchase-order cap", claimedValue: p.totalCost, unit: "USD" },
+    { field: "po_budget_cap", label: "Total cost vs. purchase-order cap", claimedValue: p.totalCost, unit: "INR" },
   ];
 }
 
@@ -72,9 +72,9 @@ export async function evaluateProposal(p: Proposal): Promise<GuardrailResult> {
       const { fact, latencyMs } = await store.getFact(p.component, "unit_price", p.vendor);
       mossOnlyLatencyMs += latencyMs;
       results.push(compareNumeric(claim, fact, p.unitPrice, PRICE_TOLERANCE, latencyMs, {
-        grounded: (retrieved) => `Matches Vendor contract price of $${retrieved}.`,
+        grounded: (retrieved) => `Matches Vendor contract price of ₹${retrieved}.`,
         flagged: (retrieved) =>
-          `Proposal claims $${p.unitPrice}/unit, but the contracted price for ${p.vendor} is $${retrieved}/unit.`,
+          `Proposal claims ₹${p.unitPrice}/unit, but the contracted price for ${p.vendor} is ₹${retrieved}/unit.`,
         unverifiable: `No contracted price on file for ${p.vendor} on ${p.component}.`,
       }));
       continue;
@@ -139,8 +139,8 @@ export async function evaluateProposal(p: Proposal): Promise<GuardrailResult> {
           ok === undefined
             ? "No purchase-order budget policy on file."
             : ok
-            ? `Total cost of $${p.totalCost.toLocaleString()} is within the $${cap!.toLocaleString()} auto-issue cap.`
-            : `Total cost of $${p.totalCost.toLocaleString()} exceeds the $${cap!.toLocaleString()} cap — this requires manual approval, not agent auto-issue.`,
+            ? `Total cost of ₹${p.totalCost.toLocaleString("en-IN")} is within the ₹${cap!.toLocaleString("en-IN")} auto-issue cap.`
+            : `Total cost of ₹${p.totalCost.toLocaleString("en-IN")} exceeds the ₹${cap!.toLocaleString("en-IN")} cap — this requires manual approval, not agent auto-issue.`,
       });
       continue;
     }
@@ -197,3 +197,4 @@ function scoreConfidence(results: ClaimResult[]): number {
   const total = results.reduce((acc, r) => acc + weight[r.status], 0);
   return Math.max(0, Math.min(1, total / results.length));
 }
+
