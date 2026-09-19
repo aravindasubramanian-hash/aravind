@@ -14,9 +14,9 @@ const baseProposal: Proposal = {
   component: "Component X",
   vendor: "Vendor A",
   quantity: 6000,
-  unitPrice: 2.35,
+  unitPrice: 211.5,
   leadTimeDays: 15,
-  totalCost: 6000 * 2.35,
+  totalCost: 6000 * 211.5,
   rationale: "test fixture",
 };
 
@@ -40,11 +40,11 @@ describe("claim coverage", () => {
 
 describe("unit_price citation (regression: was silently dropped)", () => {
   it("a flagged price mismatch still carries citationId and retrievedText", async () => {
-    const result = await evaluateProposal({ ...baseProposal, unitPrice: 2.1 });
+    const result = await evaluateProposal({ ...baseProposal, unitPrice: 189 });
     const priceClaim = result.claims.find((c) => c.field === "unit_price")!;
     expect(priceClaim.status).toBe("flagged");
     expect(priceClaim.citationId).toBe("vendorA-x-price");
-    expect(priceClaim.retrievedText).toContain("$2.35");
+    expect(priceClaim.retrievedText).toContain("₹211.50");
   });
 
   it("a grounded price match also carries citationId and retrievedText", async () => {
@@ -77,7 +77,7 @@ describe("lead time verification (regression: was never checked)", () => {
 
 describe("verdict roll-up", () => {
   it("a single critical flag is enough to BLOCK regardless of other claims", async () => {
-    const result = await evaluateProposal({ ...baseProposal, totalCost: 999_999 });
+    const result = await evaluateProposal({ ...baseProposal, totalCost: 9_999_999 });
     expect(result.verdict).toBe("BLOCK");
   });
 
