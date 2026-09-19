@@ -141,7 +141,10 @@ export default function Home() {
                 className={styles.input}
                 type="number"
                 value={customProposal.quantity}
-                onChange={(e) => setCustomField("quantity", Number(e.target.value))}
+                onChange={(e) => {
+                  const quantity = Number(e.target.value);
+                  setCustomProposal((p) => ({ ...p, quantity, totalCost: quantity * p.unitPrice }));
+                }}
               />
             </label>
             <label className={styles.field}>
@@ -151,7 +154,10 @@ export default function Home() {
                 type="number"
                 step="0.01"
                 value={customProposal.unitPrice}
-                onChange={(e) => setCustomField("unitPrice", Number(e.target.value))}
+                onChange={(e) => {
+                  const unitPrice = Number(e.target.value);
+                  setCustomProposal((p) => ({ ...p, unitPrice, totalCost: p.quantity * unitPrice }));
+                }}
               />
             </label>
             <label className={styles.field}>
@@ -164,7 +170,7 @@ export default function Home() {
               />
             </label>
             <label className={styles.field}>
-              <span className={styles.fieldLabel}>Total cost (INR)</span>
+              <span className={styles.fieldLabel}>Total cost (INR) — auto-calculated, override if needed</span>
               <input
                 className={styles.input}
                 type="number"
