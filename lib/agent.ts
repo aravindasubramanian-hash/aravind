@@ -45,9 +45,9 @@ const SCRIPTED_PROPOSALS: Record<ScenarioId, Proposal> = {
     component: "Component X",
     vendor: "Vendor A",
     quantity: 6000,
-    unitPrice: 2.35,
+    unitPrice: 211.5,
     leadTimeDays: 15,
-    totalCost: 6000 * 2.35,
+    totalCost: 6000 * 211.5,
     rationale:
       "On-hand inventory is below the 1,200-unit safety stock threshold. Vendor A is approved for Component X; ordering at their minimum order quantity keeps unit cost at contract price.",
   },
@@ -55,45 +55,45 @@ const SCRIPTED_PROPOSALS: Record<ScenarioId, Proposal> = {
     component: "Component X",
     vendor: "Vendor A",
     quantity: 6000,
-    unitPrice: 2.1, // contract price is $2.35 — this is wrong
+    unitPrice: 189, // contract price is ₹211.50 — this is wrong
     leadTimeDays: 15,
-    totalCost: 6000 * 2.1,
+    totalCost: 6000 * 189,
     rationale: "Reordering from Vendor A at their standard unit price.",
   },
   moq_violation: {
     component: "Component X",
     vendor: "Vendor B",
     quantity: 1500, // Vendor B's MOQ is 3,000 — this is below it
-    unitPrice: 2.6,
+    unitPrice: 234,
     leadTimeDays: 9,
-    totalCost: 1500 * 2.6,
+    totalCost: 1500 * 234,
     rationale: "A small top-up order from Vendor B to cover the shortfall.",
   },
   unapproved_vendor: {
     component: "Component X",
     vendor: "Vendor C", // Vendor C is only approved for Component Y
     quantity: 5000,
-    unitPrice: 2.2,
+    unitPrice: 198,
     leadTimeDays: 12,
-    totalCost: 5000 * 2.2,
+    totalCost: 5000 * 198,
     rationale: "Vendor C quoted a competitive rate for Component X.",
   },
   budget_overrun: {
     component: "Component X",
     vendor: "Vendor A",
     quantity: 9000,
-    unitPrice: 2.35,
+    unitPrice: 211.5,
     leadTimeDays: 15,
-    totalCost: 9000 * 2.35, // $21,150 — over the $20,000 PO cap
+    totalCost: 9000 * 211.5, // ₹19,03,500 — over the ₹18,00,000 PO cap
     rationale: "Ordering extra volume from Vendor A to build a buffer against future shortages.",
   },
   unverifiable_vendor: {
     component: "Component X",
     vendor: "Vendor D", // not in the policy index at all
     quantity: 5000,
-    unitPrice: 2.0,
+    unitPrice: 180,
     leadTimeDays: 10,
-    totalCost: 5000 * 2.0,
+    totalCost: 5000 * 180,
     rationale: "Vendor D is a new supplier offering a lower rate for Component X.",
   },
 };
@@ -162,3 +162,4 @@ async function proposeWithLLM(scenario: ScenarioId): Promise<Proposal> {
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
+
