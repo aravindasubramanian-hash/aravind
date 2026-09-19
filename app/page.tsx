@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
-import { DecisionRecord, ScenarioId } from "@/lib/types";
+import { DecisionRecord, Proposal, ScenarioId } from "@/lib/types";
 
 const SCENARIOS: { id: ScenarioId; label: string }[] = [
   { id: "correct", label: "Correct reorder (should PASS)" },
@@ -13,8 +13,21 @@ const SCENARIOS: { id: ScenarioId; label: string }[] = [
   { id: "unverifiable_vendor", label: "Unknown vendor (should FLAG)" },
 ];
 
+const CUSTOM_DEFAULT: Proposal = {
+  component: "Component X",
+  vendor: "Vendor A",
+  quantity: 6000,
+  unitPrice: 2.35,
+  leadTimeDays: 15,
+  totalCost: 6000 * 2.35,
+  rationale: "Custom test proposal.",
+};
+
 export default function Home() {
+  const [mode, setMode] = useState<"preset" | "custom">("preset");
   const [scenario, setScenario] = useState<ScenarioId>("correct");
+  const [customProposal, setCustomProposal] = useState<Proposal>(CUSTOM_DEFAULT);
+  const [customQuery, setCustomQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [current, setCurrent] = useState<DecisionRecord | null>(null);
   const [history, setHistory] = useState<DecisionRecord[]>([]);
@@ -27,14 +40,22 @@ export default function Home() {
       .catch(() => {});
   }, []);
 
+  function setCustomField<K extends keyof Proposal>(field: K, value: Proposal[K]) {
+    setCustomProposal((p) => ({ ...p, [field]: value }));
+  }
+
   async function run() {
     setLoading(true);
     setError(null);
     try {
+      const body =
+        mode === "custom"
+          ? { customProposal, customQuery }
+          : { scenario };
       const res = await fetch("/api/decide", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ scenario }),
+        body: JSON.stringify(body),
       });
       if (!res.ok) throw new Error((await res.json()).error ?? "Request failed");
       const entry: DecisionRecord = await res.json();
@@ -57,25 +78,135 @@ export default function Home() {
         returns a verdict with citations and latency — before the decision reaches an ERP or a vendor.
       </p>
 
-      <div className={styles.scenarios}>
-        {SCENARIOS.map((s) => (
-          <button
-            key={s.id}
-            className={`${styles.scenarioBtn} ${scenario === s.id ? styles.active : ""}`}
-            onClick={() => setScenario(s.id)}
-            disabled={loading}
-          >
-            {s.label}
-          </button>
-        ))}
+      <div className={styles.modeTabs}>
+        <button
+          className={`${styles.modeTab} ${mode === "preset" ? styles.modeTabActive : ""}`}
+          onClick={() => setMode("preset")}
+          disabled={loading}
+        >
+          Preset scenarios
+        </button>
+        <button
+          className={`${styles.modeTab} ${mode === "custom" ? styles.modeTabActive : ""}`}
+          onClick={() => setMode("custom")}
+          disabled={loading}
+        >
+          Custom proposal — test your own data
+        </button>
       </div>
+
+      {mode === "preset" ? (
+        <div className={styles.scenarios}>
+          {SCENARIOS.map((s) => (
+            <button
+              key={s.id}
+              className={`${styles.scenarioBtn} ${scenario === s.id ? styles.active : ""}`}
+              onClick={() => setScenario(s.id)}
+              disabled={loading}
+            >
+              {s.label}
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div className={styles.card}>
+          <p className={styles.cardTitle}>Build a proposal to check against the policy corpus</p>
+          <p className={styles.claimDetail} style={{ marginBottom: 14 }}>
+            Known corpus: Component X — Vendor A ($2.35/unit, MOQ 6,000, 15-day lead time) and Vendor B
+            ($2.60/unit, MOQ 3,000, 9-day lead time) are approved. Component Y — Vendor C ($4.10/unit) is
+            approved. Vendor C is <i>not</i> approved for Component X. Any other vendor name (e.g. &quot;Vendor
+            D&quot;) has no records at all. Purchase-order cap is $20,000. Change any field below to see which
+            claim gets flagged.
+          </p>
+          <div className={styles.proposalGrid}>
+            <label className={styles.field}>
+              <span className={styles.fieldLabel}>Component</span>
+              <input
+                className={styles.input}
+                value={customProposal.component}
+                onChange={(e) => setCustomField("component", e.target.value)}
+              />
+            </label>
+            <label className={styles.field}>
+              <span className={styles.fieldLabel}>Vendor</span>
+              <input
+                className={styles.input}
+                value={customProposal.vendor}
+                onChange={(e) => setCustomField("vendor", e.target.value)}
+              />
+            </label>
+            <label className={styles.field}>
+              <span className={styles.fieldLabel}>Quantity (units)</span>
+              <input
+                className={styles.input}
+                type="number"
+                value={customProposal.quantity}
+                onChange={(e) => setCustomField("quantity", Number(e.target.value))}
+              />
+            </label>
+
+            <label className={styles.field}>
+              <span className={styles.fieldLabel}>Unit price (USD)</span>
+              <input
+                className={styles.input}
+                type="number"
+                step="0.01"
+                value={customProposal.unitPrice}
+                onChange={(e) => setCustomField("unitPrice", Number(e.target.value))}
+              />
+            </label>
+            <label className={styles.field}>
+              <span className={styles.fieldLabel}>Lead time (days)</span>
+              <input
+                className={styles.input}
+                type="number"
+                value={customProposal.leadTimeDays}
+                onChange={(e) => setCustomField("leadTimeDays", Number(e.target.value))}
+              />
+            </label>
+            <label className={styles.field}>
+              <span className={styles.fieldLabel}>Total cost (USD)</span>
+              <input
+                className={styles.input}
+                type="number"
+                step="0.01"
+                value={customProposal.totalCost}
+                onChange={(e) => setCustomField("totalCost", Number(e.target.value))}
+              />
+            </label>
+          </div>
+          <label className={styles.field} style={{ marginTop: 14 }}>
+            <span className={styles.fieldLabel}>Rationale (shown on the record, not checked)</span>
+            <input
+              className={styles.input}
+              value={customProposal.rationale}
+              onChange={(e) => setCustomField("rationale", e.target.value)}
+            />
+          </label>
+          <label className={styles.field} style={{ marginTop: 14 }}>
+            <span className={styles.fieldLabel}>Query label (optional)</span>
+            <input
+              className={styles.input}
+              placeholder="e.g. Stress-testing a vendor outside the corpus"
+              value={customQuery}
+              onChange={(e) => setCustomQuery(e.target.value)}
+            />
+          </label>
+        </div>
+      )}
 
       <div className={styles.runRow}>
         <button className={styles.runBtn} onClick={run} disabled={loading}>
           {loading ? "Running…" : "Run decision"}
         </button>
         <span className={styles.hint}>
-          {loading ? "Agent proposing, then guardrail checking against Moss…" : "Agent → Guardrail → Verdict"}
+          {loading
+            ? mode === "custom"
+              ? "Guardrail checking your proposal against Moss…"
+              : "Agent proposing, then guardrail checking against Moss…"
+            : mode === "custom"
+            ? "Your proposal → Guardrail → Verdict (no agent hop)"
+            : "Agent → Guardrail → Verdict"}
         </span>
       </div>
 
@@ -169,3 +300,4 @@ function Field({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
+
