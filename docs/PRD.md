@@ -10,7 +10,7 @@ The Agent Reliability, Security and Evaluation theme is about exactly this: agen
 
 ## Target User & Use Case
 
-**Primary user:** an operations or procurement analyst — or the ops manager reviewing their team's recommendations — at a company that already uses, or is being asked to trust, an AI copilot for reorder and vendor decisions. Moment of use: right after the copilot proposes a decision ("reorder 5,000 units of Component X from Vendor A at $2.10/unit, 15-day lead time") and before that decision is acted on — sent to a vendor, entered into the ERP, or approved.
+**Primary user:** an operations or procurement analyst — or the ops manager reviewing their team's recommendations — at a company that already uses, or is being asked to trust, an AI copilot for reorder and vendor decisions. Moment of use: right after the copilot proposes a decision ("reorder 5,000 units of Component X from Vendor A at ₹189/unit, 15-day lead time") and before that decision is acted on — sent to a vendor, entered into the ERP, or approved.
 
 **Secondary user:** whoever owns AI governance for the ops function, who needs proof that every agent-driven decision was checked against policy, not just generated, and an audit trail to point to when a decision is questioned.
 
