@@ -17,9 +17,9 @@ const CUSTOM_DEFAULT: Proposal = {
   component: "Component X",
   vendor: "Vendor A",
   quantity: 6000,
-  unitPrice: 2.35,
+  unitPrice: 211.5,
   leadTimeDays: 15,
-  totalCost: 6000 * 2.35,
+  totalCost: 6000 * 211.5,
   rationale: "Custom test proposal.",
 };
 
@@ -112,10 +112,10 @@ export default function Home() {
         <div className={styles.card}>
           <p className={styles.cardTitle}>Build a proposal to check against the policy corpus</p>
           <p className={styles.claimDetail} style={{ marginBottom: 14 }}>
-            Known corpus: Component X — Vendor A ($2.35/unit, MOQ 6,000, 15-day lead time) and Vendor B
-            ($2.60/unit, MOQ 3,000, 9-day lead time) are approved. Component Y — Vendor C ($4.10/unit) is
+            Known corpus: Component X — Vendor A (₹211.50/unit, MOQ 6,000, 15-day lead time) and Vendor B
+            (₹234.00/unit, MOQ 3,000, 9-day lead time) are approved. Component Y — Vendor C (₹369.00/unit) is
             approved. Vendor C is <i>not</i> approved for Component X. Any other vendor name (e.g. &quot;Vendor
-            D&quot;) has no records at all. Purchase-order cap is $20,000. Change any field below to see which
+            D&quot;) has no records at all. Purchase-order cap is ₹18,00,000. Change any field below to see which
             claim gets flagged.
           </p>
           <div className={styles.proposalGrid}>
@@ -144,9 +144,8 @@ export default function Home() {
                 onChange={(e) => setCustomField("quantity", Number(e.target.value))}
               />
             </label>
-
             <label className={styles.field}>
-              <span className={styles.fieldLabel}>Unit price (USD)</span>
+              <span className={styles.fieldLabel}>Unit price (INR)</span>
               <input
                 className={styles.input}
                 type="number"
@@ -165,7 +164,7 @@ export default function Home() {
               />
             </label>
             <label className={styles.field}>
-              <span className={styles.fieldLabel}>Total cost (USD)</span>
+              <span className={styles.fieldLabel}>Total cost (INR)</span>
               <input
                 className={styles.input}
                 type="number"
@@ -231,9 +230,9 @@ export default function Home() {
               <Field label="Component" value={current.proposal.component} />
               <Field label="Vendor" value={current.proposal.vendor} />
               <Field label="Quantity" value={`${current.proposal.quantity.toLocaleString()} units`} />
-              <Field label="Unit price" value={`$${current.proposal.unitPrice.toFixed(2)}`} />
+              <Field label="Unit price" value={`₹${current.proposal.unitPrice.toFixed(2)}`} />
               <Field label="Lead time" value={`${current.proposal.leadTimeDays} days`} />
-              <Field label="Total cost" value={`$${current.proposal.totalCost.toLocaleString()}`} />
+              <Field label="Total cost" value={`₹${current.proposal.totalCost.toLocaleString("en-IN")}`} />
             </div>
           </div>
 
