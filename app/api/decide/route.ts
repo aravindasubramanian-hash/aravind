@@ -8,7 +8,7 @@ import { SCENARIOS } from "@/lib/agent";
 export const runtime = "nodejs";
 
 export async function GET() {
-  return NextResponse.json({ records: list() });
+  return NextResponse.json({ records: await list() });
 }
 
 const PROPOSAL_FIELDS: (keyof Proposal)[] = [
@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
       guardrail,
       agentLatencyMs,
     };
-    record(entry);
+    await record(entry);
     return NextResponse.json(entry);
   }
 
@@ -89,8 +89,7 @@ export async function POST(req: NextRequest) {
     guardrail,
     agentLatencyMs,
   };
-  record(entry);
+  await record(entry);
 
   return NextResponse.json(entry);
 }
-
